@@ -1,18 +1,17 @@
-
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, Upload, Plus, Check, Sparkles, File, Mic } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { toast } from 'sonner';
-import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Upload, FileText, Plus, BookOpen, Trash2Icon } from 'lucide-react';
+import type { Flashcard as FlashcardType, FlashcardDeck } from '@/types/flashcard';
 import { v4 as uuidv4 } from 'uuid';
 import { mockGenerateFlashcards } from '@/lib/mock-ai';
-import { FlashcardDeck, Flashcard } from '@/types/flashcard';
 import { mockDecks } from '@/data/mockData';
 
 const CreatePage: React.FC = () => {
@@ -24,8 +23,9 @@ const CreatePage: React.FC = () => {
   const [content, setContent] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
-  const [generatedFlashcards, setGeneratedFlashcards] = useState<Flashcard[]>([]);
-  
+  const [generatedFlashcards, setGeneratedFlashcards] = useState<FlashcardType[]>([]);
+  const { toast } = useToast();
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -36,10 +36,8 @@ const CreatePage: React.FC = () => {
 
   const toggleRecording = () => {
     if (isRecording) {
-      // Stop recording
       setIsRecording(false);
       toast.success('Recording saved!');
-      // Simulate a transcription
       setTimeout(() => {
         setContent(content + (content ? '\n\n' : '') + 
           "The cell membrane is a biological membrane that separates the interior of all cells from the outside environment. " +
@@ -48,19 +46,16 @@ const CreatePage: React.FC = () => {
         );
       }, 1000);
     } else {
-      // Start recording
       setIsRecording(true);
       setRecordingTime(0);
       const timer = setInterval(() => {
         setRecordingTime(prev => prev + 1);
       }, 1000);
       
-      // Automatically stop after 10 seconds for demo
       setTimeout(() => {
         clearInterval(timer);
         setIsRecording(false);
         toast.success('Recording saved!');
-        // Simulate a transcription
         setContent(content + (content ? '\n\n' : '') + 
           "The cell membrane is a biological membrane that separates the interior of all cells from the outside environment. " +
           "It consists of a lipid bilayer with embedded proteins. " +
@@ -84,7 +79,6 @@ const CreatePage: React.FC = () => {
     setIsGenerating(true);
     
     try {
-      // Simulate AI processing
       const cards = await mockGenerateFlashcards(content || uploadedFile?.name || 'Biology concepts');
       
       setGeneratedFlashcards(cards);
@@ -111,13 +105,11 @@ const CreatePage: React.FC = () => {
       updatedAt: new Date().toISOString()
     };
     
-    // In a real app, this would save to a database
-    // For now, we'll just navigate to the dashboard
     mockDecks.unshift(newDeck);
     toast.success('Flashcard deck saved successfully!');
     navigate('/dashboard');
   };
-  
+
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i: number) => ({
@@ -222,7 +214,7 @@ const CreatePage: React.FC = () => {
                         className="ml-auto h-6 w-6"
                         onClick={() => setUploadedFile(null)}
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2Icon className="h-4 w-4" />
                       </Button>
                     </div>
                   )}
@@ -344,7 +336,7 @@ const CreatePage: React.FC = () => {
 };
 
 interface FlashcardProps {
-  card: Flashcard;
+  card: FlashcardType;
   index: number;
 }
 

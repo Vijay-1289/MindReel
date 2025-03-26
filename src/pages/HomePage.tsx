@@ -2,8 +2,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, BookOpen, BrainCircuit, Zap } from 'lucide-react';
+import { Sparkles, ArrowRight, BookOpen, BrainCircuit, Zap, Heart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import FlashcardDemo from '@/components/FlashcardDemo';
 
 const HomePage: React.FC = () => {
   return (
@@ -38,7 +39,7 @@ const HomePage: React.FC = () => {
                   transition={{ duration: 0.6, delay: 0.2 }}
                 >
                   <Link to="/create">
-                    <Button size="lg" className="h-12 px-6">
+                    <Button size="lg" className="h-12 px-6 rounded-full">
                       Create Flashcards
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -50,7 +51,7 @@ const HomePage: React.FC = () => {
                   transition={{ duration: 0.6, delay: 0.3 }}
                 >
                   <Link to="/dashboard">
-                    <Button variant="outline" size="lg" className="h-12 px-6">
+                    <Button variant="outline" size="lg" className="h-12 px-6 rounded-full">
                       View My Decks
                     </Button>
                   </Link>
@@ -63,35 +64,41 @@ const HomePage: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="relative"
             >
-              <div className="relative mx-auto aspect-video overflow-hidden rounded-xl border bg-white shadow-xl md:aspect-[4/3]">
-                <div className="flashcard-container w-full h-full p-6">
-                  <motion.div 
-                    animate={{ rotateY: [0, 180, 0] }}
-                    transition={{ 
-                      duration: 2.5, 
-                      ease: "easeInOut",
-                      repeat: Infinity,
-                      repeatDelay: 4
-                    }}
-                    className="flashcard relative w-full h-full rounded-lg border border-border/40 shadow-lg"
-                  >
-                    <div className="flashcard-front absolute inset-0 rounded-lg bg-white p-8 flex flex-col justify-center items-center">
-                      <div className="w-full space-y-4">
-                        <div className="badge-primary w-fit">Question</div>
-                        <h3 className="text-xl font-medium">What is the role of mitochondria in cells?</h3>
-                      </div>
-                    </div>
-                    <div className="flashcard-back absolute inset-0 rounded-lg bg-primary/5 p-8 flex flex-col justify-center items-center">
-                      <div className="w-full space-y-4">
-                        <div className="badge-secondary w-fit">Answer</div>
-                        <h3 className="text-xl font-medium">Mitochondria are the powerhouse of the cell responsible for generating most of the cell's supply of ATP through cellular respiration.</h3>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
+              <FlashcardDemo />
+              
               <div className="absolute -top-12 -right-12 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
               <div className="absolute -bottom-12 -left-12 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
+              
+              {/* Decorative elements */}
+              <motion.div 
+                className="absolute -top-4 -left-4 text-pink-400"
+                animate={{ 
+                  rotate: [0, 10, 0, -10, 0],
+                  scale: [1, 1.1, 1, 1.1, 1]
+                }}
+                transition={{ 
+                  duration: 5,
+                  repeat: Infinity,
+                  repeatType: "loop"
+                }}
+              >
+                <Heart size={24} fill="currentColor" />
+              </motion.div>
+              
+              <motion.div 
+                className="absolute -bottom-4 -right-4 text-yellow-400"
+                animate={{ 
+                  rotate: [0, 15, 0, -15, 0],
+                  y: [0, -5, 0, 5, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  repeatType: "loop"
+                }}
+              >
+                <Star size={28} fill="currentColor" />
+              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -113,8 +120,8 @@ const HomePage: React.FC = () => {
             </div>
             <div className="grid gap-8 md:grid-cols-3">
               <motion.div
-                whileHover={{ y: -5 }}
-                className="group relative overflow-hidden rounded-lg border bg-background p-6 shadow-sm transition-all hover:shadow-md"
+                whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                className="group relative overflow-hidden rounded-2xl border bg-background p-6 shadow-sm transition-all hover:border-primary/50"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
                   <BookOpen className="h-6 w-6" />
@@ -125,8 +132,8 @@ const HomePage: React.FC = () => {
                 </p>
               </motion.div>
               <motion.div
-                whileHover={{ y: -5 }}
-                className="group relative overflow-hidden rounded-lg border bg-background p-6 shadow-sm transition-all hover:shadow-md"
+                whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                className="group relative overflow-hidden rounded-2xl border bg-background p-6 shadow-sm transition-all hover:border-primary/50"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
                   <BrainCircuit className="h-6 w-6" />
@@ -137,8 +144,8 @@ const HomePage: React.FC = () => {
                 </p>
               </motion.div>
               <motion.div
-                whileHover={{ y: -5 }}
-                className="group relative overflow-hidden rounded-lg border bg-background p-6 shadow-sm transition-all hover:shadow-md"
+                whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                className="group relative overflow-hidden rounded-2xl border bg-background p-6 shadow-sm transition-all hover:border-primary/50"
               >
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
                   <Zap className="h-6 w-6" />
@@ -154,7 +161,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-secondary/50 py-16">
+      <section className="bg-secondary/50 py-16 rounded-3xl mx-4 my-8">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center gap-4 text-center">
             <motion.div
@@ -178,7 +185,7 @@ const HomePage: React.FC = () => {
               viewport={{ once: true }}
             >
               <Link to="/create">
-                <Button size="lg" className="h-12 px-6">
+                <Button size="lg" className="h-12 px-6 rounded-full animate-pulse">
                   Get Started Now
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
