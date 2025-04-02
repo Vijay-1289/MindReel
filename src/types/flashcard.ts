@@ -1,5 +1,5 @@
 
-export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
+export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced' | 'medium' | 'hard';
 
 export type AnswerType = 'multiple-choice' | 'text';
 

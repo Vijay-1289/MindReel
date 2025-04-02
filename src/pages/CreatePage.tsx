@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -11,7 +12,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Label } from '@/components/ui/label-wrapper';
 import { 
   Upload, 
-  FileText, 
+  FileText as File, 
   Plus, 
   BookOpen, 
   Trash2, 
@@ -41,14 +42,20 @@ const CreatePage: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       setUploadedFile(file);
-      toast.success(`File "${file.name}" uploaded successfully`);
+      toast({
+        title: "File uploaded",
+        description: `File "${file.name}" uploaded successfully`
+      });
     }
   };
 
   const toggleRecording = () => {
     if (isRecording) {
       setIsRecording(false);
-      toast.success('Recording saved!');
+      toast({
+        title: "Recording complete",
+        description: "Recording saved!"
+      });
       setTimeout(() => {
         setContent(content + (content ? '\n\n' : '') + 
           "The cell membrane is a biological membrane that separates the interior of all cells from the outside environment. " +
@@ -66,7 +73,10 @@ const CreatePage: React.FC = () => {
       setTimeout(() => {
         clearInterval(timer);
         setIsRecording(false);
-        toast.success('Recording saved!');
+        toast({
+          title: "Recording complete",
+          description: "Recording saved!"
+        });
         setContent(content + (content ? '\n\n' : '') + 
           "The cell membrane is a biological membrane that separates the interior of all cells from the outside environment. " +
           "It consists of a lipid bilayer with embedded proteins. " +
@@ -78,12 +88,20 @@ const CreatePage: React.FC = () => {
 
   const handleGenerate = async () => {
     if (!deckTitle.trim()) {
-      toast.error('Please enter a deck title');
+      toast({
+        variant: "destructive",
+        title: "Missing title",
+        description: "Please enter a deck title"
+      });
       return;
     }
     
     if (!content.trim() && !uploadedFile) {
-      toast.error('Please upload a file or enter content');
+      toast({
+        variant: "destructive",
+        title: "Missing content",
+        description: "Please upload a file or enter content"
+      });
       return;
     }
     
@@ -93,9 +111,16 @@ const CreatePage: React.FC = () => {
       const cards = await mockGenerateFlashcards(content || uploadedFile?.name || 'Biology concepts');
       
       setGeneratedFlashcards(cards);
-      toast.success('Flashcards generated successfully!');
+      toast({
+        title: "Success",
+        description: "Flashcards generated successfully!"
+      });
     } catch (error) {
-      toast.error('Failed to generate flashcards. Please try again.');
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to generate flashcards. Please try again."
+      });
     } finally {
       setIsGenerating(false);
     }
@@ -103,7 +128,11 @@ const CreatePage: React.FC = () => {
 
   const handleSaveDeck = () => {
     if (generatedFlashcards.length === 0) {
-      toast.error('Please generate flashcards first');
+      toast({
+        variant: "destructive",
+        title: "No flashcards",
+        description: "Please generate flashcards first"
+      });
       return;
     }
     
@@ -117,7 +146,10 @@ const CreatePage: React.FC = () => {
     };
     
     mockDecks.unshift(newDeck);
-    toast.success('Flashcard deck saved successfully!');
+    toast({
+      title: "Deck saved",
+      description: "Flashcard deck saved successfully!"
+    });
     navigate('/dashboard');
   };
 
@@ -225,7 +257,7 @@ const CreatePage: React.FC = () => {
                         className="ml-auto h-6 w-6"
                         onClick={() => setUploadedFile(null)}
                       >
-                        <Trash2Icon className="h-4 w-4" />
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   )}
@@ -340,37 +372,6 @@ const CreatePage: React.FC = () => {
               ))}
             </div>
           )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface FlashcardProps {
-  card: FlashcardType;
-  index: number;
-}
-
-const Flashcard: React.FC<FlashcardProps> = ({ card, index }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-
-  return (
-    <div 
-      className="h-48 w-full cursor-pointer"
-      onClick={() => setIsFlipped(!isFlipped)}
-    >
-      <div className={`flashcard h-full w-full rounded-lg ${isFlipped ? 'flipped' : ''}`}>
-        <div className="flashcard-front p-6 rounded-lg border shadow-sm bg-white">
-          <div className="h-full flex flex-col">
-            <div className="badge-primary w-fit mb-2">Question #{index + 1}</div>
-            <p className="text-lg font-medium">{card.question}</p>
-          </div>
-        </div>
-        <div className="flashcard-back p-6 rounded-lg border shadow-sm bg-primary/5">
-          <div className="h-full flex flex-col">
-            <div className="badge-secondary w-fit mb-2">Answer</div>
-            <p className="text-lg">{card.answer}</p>
-          </div>
         </div>
       </div>
     </div>
