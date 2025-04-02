@@ -1,10 +1,22 @@
 
+export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
+
+export type AnswerType = 'multiple-choice' | 'text';
+
+export interface MultipleChoiceOption {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+}
+
 export interface Flashcard {
   id: string;
   question: string;
   answer: string;
+  difficulty: DifficultyLevel;
+  answerType: AnswerType;
+  options?: MultipleChoiceOption[];
   tags?: string[];
-  difficulty?: 'easy' | 'medium' | 'hard';
   lastReviewed?: string;
 }
 

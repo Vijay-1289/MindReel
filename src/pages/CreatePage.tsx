@@ -8,11 +8,22 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Upload, FileText, Plus, BookOpen, Trash2Icon } from 'lucide-react';
+import { Label } from '@/components/ui/label-wrapper';
+import { 
+  Upload, 
+  FileText, 
+  Plus, 
+  BookOpen, 
+  Trash2, 
+  Check, 
+  Sparkles, 
+  Mic
+} from 'lucide-react';
 import type { Flashcard as FlashcardType, FlashcardDeck } from '@/types/flashcard';
 import { v4 as uuidv4 } from 'uuid';
 import { mockGenerateFlashcards } from '@/lib/mock-ai';
 import { mockDecks } from '@/data/mockData';
+import Flashcard from '@/components/Flashcard';
 
 const CreatePage: React.FC = () => {
   const navigate = useNavigate();
